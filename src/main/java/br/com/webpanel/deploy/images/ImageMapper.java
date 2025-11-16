@@ -1,48 +1,42 @@
 package br.com.webpanel.deploy.images;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import br.com.webpanel.deploy.images.dto.CreateImageDto;
 import br.com.webpanel.deploy.images.dto.RecoveryImageDto;
 
-@Mapper(componentModel = "spring")
+/**
+ * Mapper implemented by MapStruct at build time.
+ * componentModel = "spring" makes the generated mapper a Spring bean and
+ * NullValuePropertyMappingStrategy.IGNORE keeps existing values when updating
+ * and the source property is null (useful for partial updates).
+ */
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ImageMapper {
+
     /**
-     * MapStruct mapper instance.
+     * Convert an {@link Image} entity to a {@link RecoveryImageDto}.
      *
-     * Note: when running in a Spring context prefer to inject the mapper bean
-     * instead of using this static instance. The field is kept for convenience
-     * in tests or static contexts. MapStruct generates the implementation at
-     * compile time.
+     * @param image the entity to map
+     * @return a DTO representing the image
      */
-    ImageMapper INSTANCE = Mappers.getMapper(ImageMapper.class);
+    RecoveryImageDto toDto(Image image);
 
     /**
      * Convert a {@link CreateImageDto} to an {@link Image} entity.
      *
-     * This method performs only a structural mapping between the DTO and the
-     * entity. It does not set persistence-related fields (for example id) or
-     * perform validation/business logic — those responsibilities belong to the
-     * service layer.
-     *
-     * @param dto the creation DTO containing input data; may be null depending
-     *            on MapStruct configuration (caller should follow project
-     *            null-handling conventions)
-     * @return mapped {@link Image} entity instance (possibly with null id)
+     * @param dto the creation DTO
+     * @return a mapped Image entity
      */
-    Image createImageDtoToImage(CreateImageDto dto);
+    Image toEntity(CreateImageDto dto);
 
     /**
-     * Convert an {@link Image} entity to a {@link RecoveryImageDto} used by
-     * API responses.
+     * Update an existing {@link Image} entity with data from a {@link CreateImageDto}.
      *
-     * The returned DTO contains the fields required by the API contract and
-     * should be safe to expose in responses. Mapping is structural only; any
-     * presentation-specific adjustments must be done by the caller.
-     *
-     * @param image the entity to map; may be null depending on caller
-     * @return a {@link RecoveryImageDto} representing the entity
+     * @param dto the DTO containing updated data
+     * @param entity the entity to update
      */
-    RecoveryImageDto imageToRecoveryImageDto(Image image);
+    void updateEntityFromDto(CreateImageDto dto, @MappingTarget Image entity);
 }

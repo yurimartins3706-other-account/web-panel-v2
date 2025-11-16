@@ -2,38 +2,43 @@ package br.com.webpanel.deploy.images;
 
 import java.time.Instant;
 
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+/**
+ * Image entity for storing image metadata and content.
+ * Fields: id, name, base64, size, createdAt, updatedAt
+ */
 @Entity
 @Table(name = "images")
-@Getter @Setter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Image {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "name is required")
     private String name;
 
-    @NotEmpty(message = "Base64 content must not be empty")
     @Column(columnDefinition = "TEXT", nullable = false)
+    @NotBlank(message = "base64 content is required")
     private String base64;
 
     @Column(nullable = false)
