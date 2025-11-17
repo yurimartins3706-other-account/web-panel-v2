@@ -11,7 +11,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +21,7 @@ import lombok.NoArgsConstructor;
  * Fields: id, name, base64, size, createdAt, updatedAt
  */
 @Entity
-@Table(name = "images")
+@Table(name = "image")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
