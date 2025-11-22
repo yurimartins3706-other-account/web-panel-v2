@@ -131,6 +131,11 @@ public class ProductService {
         Product existing = productRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
+        existing.getCustomAttributeValues().clear();
+        existing.getCategories().clear();
+        existing.getImages().clear();
+        // 
+
         // Check if new SKU already exists (ignoring current product)
         if (!existing.getSku().equalsIgnoreCase(dto.sku()) &&
             productRepository.existsBySkuIgnoreCase(dto.sku())) {
@@ -149,18 +154,18 @@ public class ProductService {
             if (categories.size() != dto.categoryIds().size()) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "One or more categories not found");
             }
-            existing.setCategories(categories);
-        }
 
-        Product saved = productRepository.save(existing);
+            existing.getCategories().addAll(categories);
+        }
 
         // Update custom attributes
         if (dto.customAttributes() != null) {
-            saved.setCustomAttributeValues(
-                dto.customAttributes().stream()
-                .map(attr -> createCustomAttributeValue(saved, attr))
-                .collect(Collectors.toSet())
-            );
+            
+            Set<ProductCustomAttributeValue> newAttributes = dto.customAttributes().stream()
+                .map(attr -> createCustomAttributeValue(existing, attr))
+                .collect(Collectors.toSet());
+
+            existing.getCustomAttributeValues().addAll(newAttributes);
         }
 
         if (dto.imagesIds() != null && !dto.imagesIds().isEmpty()) {
@@ -172,10 +177,10 @@ public class ProductService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "One or more images not found");
             }
 
-            saved.setImages(images);
+            existing.getImages().addAll(images);
         }
 
-        Product updatedProduct = productRepository.save(saved);
+        Product updatedProduct = productRepository.save(existing);
         return productMapper.toDto(updatedProduct);
     }
 

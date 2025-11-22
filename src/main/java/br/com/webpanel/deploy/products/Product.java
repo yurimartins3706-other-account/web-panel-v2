@@ -70,7 +70,7 @@ public class Product {
     )
     private Set<Image> images;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductCustomAttributeValue> customAttributeValues;
 
     private Instant createdAt;
