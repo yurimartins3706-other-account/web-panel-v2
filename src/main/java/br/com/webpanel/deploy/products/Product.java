@@ -3,21 +3,31 @@ package br.com.webpanel.deploy.products;
 import java.util.Set;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.Instant;
 import br.com.webpanel.deploy.categories.Category;
+import br.com.webpanel.deploy.products.ProductCustomAttributeValue;
+import br.com.webpanel.deploy.images.Image;
+import br.com.webpanel.deploy.customfields.CustomField;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Product entity for storing product metadata and content.
  * Supports N custom attributes via ProductCustomAttributeValue relationship.
  * Fields: id, name, description, price, sku, brand, categories, customAttributeValues, createdAt, updatedAt
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "product")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -36,7 +46,7 @@ public class Product {
     private String sku;
 
     @Column(nullable = false)
-    @NotBlank(message = "price is required")
+    @NotNull(message = "price is required")
     private Double price;
 
     private String brand;

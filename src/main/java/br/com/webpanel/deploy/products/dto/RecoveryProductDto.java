@@ -14,6 +14,7 @@ public record RecoveryProductDto(
     String brand,
     String description,
     Set<Long> categoryIds,
+    Set<Long> imagesIds,
     Set<RecoveryProductCustomAttributeDto> customAttributes,
     Instant createdAt,
     Instant updatedAt

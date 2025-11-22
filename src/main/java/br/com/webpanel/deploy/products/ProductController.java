@@ -12,20 +12,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import lombok.RequiredArgsConstructor;
 import br.com.webpanel.deploy.products.dto.CreateProductDto;
 import br.com.webpanel.deploy.products.dto.RecoveryProductDto;
 
 @RestController
 @RequestMapping(value = "/api/product", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Products", description = "Product management endpoints")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService service;
-
-    public ProductController(ProductService service) {
-        this.service = service;
-    }
 
     @Operation(summary = "Create a new product")
     @ApiResponses(value = {

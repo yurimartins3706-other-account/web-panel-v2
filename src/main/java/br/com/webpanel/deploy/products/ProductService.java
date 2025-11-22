@@ -16,26 +16,25 @@ import br.com.webpanel.deploy.customfields.CustomFieldRepository;
 import br.com.webpanel.deploy.products.dto.CreateProductDto;
 import br.com.webpanel.deploy.products.dto.CreateProductCustomAttributeDto;
 import br.com.webpanel.deploy.products.dto.RecoveryProductDto;
+import br.com.webpanel.deploy.products.Product;
+import br.com.webpanel.deploy.products.ProductCustomAttributeValue;
+import br.com.webpanel.deploy.images.Image;
+import br.com.webpanel.deploy.images.ImageRepository;
+import br.com.webpanel.deploy.products.ProductMapper;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Service layer for Product CRUD operations.
  */
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ProductService {
-
+    private final ImageRepository imageRepository;
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
     private final CustomFieldRepository customFieldRepository;
-
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper,
-                         CategoryRepository categoryRepository, CustomFieldRepository customFieldRepository) {
-        this.productRepository = productRepository;
-        this.productMapper = productMapper;
-        this.categoryRepository = categoryRepository;
-        this.customFieldRepository = customFieldRepository;
-    }
 
     /**
      * Creates a new product from the provided DTO.
@@ -53,6 +52,18 @@ public class ProductService {
         }
 
         Product entity = productMapper.toEntity(dto);
+
+        if (dto.imagesIds() != null && !dto.imagesIds().isEmpty()) {
+            Set<Image> images = imageRepository.findAllById(dto.imagesIds())
+                .stream()
+                .collect(Collectors.toSet());
+
+            if (images.size() != dto.imagesIds().size()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "One or more images not found");
+            }
+
+            entity.setImages(images);
+        }
 
         // Set categories
         if (dto.categoryIds() != null && !dto.categoryIds().isEmpty()) {
@@ -145,9 +156,23 @@ public class ProductService {
 
         // Update custom attributes
         if (dto.customAttributes() != null) {
-            saved.setCustomAttributeValues(dto.customAttributes().stream()
+            saved.setCustomAttributeValues(
+                dto.customAttributes().stream()
                 .map(attr -> createCustomAttributeValue(saved, attr))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet())
+            );
+        }
+
+        if (dto.imagesIds() != null && !dto.imagesIds().isEmpty()) {
+            Set<Image> images = imageRepository.findAllById(dto.imagesIds())
+                .stream()
+                .collect(Collectors.toSet());
+
+            if (images.size() != dto.imagesIds().size()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "One or more images not found");
+            }
+
+            saved.setImages(images);
         }
 
         Product updatedProduct = productRepository.save(saved);

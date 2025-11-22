@@ -2,12 +2,11 @@ package br.com.webpanel.deploy.customfields;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import br.com.webpanel.deploy.customfields.dto.CreateCustomFieldDto;
 import br.com.webpanel.deploy.customfields.dto.RecoveryCustomFieldDto;
 
@@ -16,15 +15,11 @@ import br.com.webpanel.deploy.customfields.dto.RecoveryCustomFieldDto;
  */
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CustomFieldService {
 
     private final CustomFieldRepository repository;
     private final CustomFieldMapper mapper;
-
-    public CustomFieldService(CustomFieldRepository repository, CustomFieldMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     /**
      * Creates a new custom field from the provided DTO.

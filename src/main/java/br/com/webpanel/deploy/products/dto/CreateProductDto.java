@@ -25,6 +25,8 @@ public record CreateProductDto(
 
     String description,
 
+    Set<Long> imagesIds,
+
     Set<Long> categoryIds,
 
     Set<CreateProductCustomAttributeDto> customAttributes

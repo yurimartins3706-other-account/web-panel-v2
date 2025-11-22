@@ -12,20 +12,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import lombok.RequiredArgsConstructor;
 import br.com.webpanel.deploy.categories.dto.CreateCategoryDto;
 import br.com.webpanel.deploy.categories.dto.RecoveryCategoryDto;
 
 @RestController
 @RequestMapping(value = "/api/category", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Categories", description = "Category management endpoints")
+@RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService service;
-
-    public CategoryController(CategoryService service) {
-        this.service = service;
-    }
 
     @Operation(summary = "Create a new category")
     @ApiResponses(value = {

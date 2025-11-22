@@ -2,12 +2,11 @@ package br.com.webpanel.deploy.categories;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import br.com.webpanel.deploy.categories.dto.CreateCategoryDto;
 import br.com.webpanel.deploy.categories.dto.RecoveryCategoryDto;
 
@@ -16,15 +15,11 @@ import br.com.webpanel.deploy.categories.dto.RecoveryCategoryDto;
  */
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository repository;
     private final CategoryMapper mapper;
-
-    public CategoryService(CategoryRepository repository, CategoryMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     public RecoveryCategoryDto createCategory(CreateCategoryDto dto) {
         // Check if name already exists

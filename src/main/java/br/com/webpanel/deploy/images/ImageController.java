@@ -12,20 +12,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import lombok.RequiredArgsConstructor;
 import br.com.webpanel.deploy.images.dto.CreateImageDto;
 import br.com.webpanel.deploy.images.dto.RecoveryImageDto;
 
 @RestController
 @RequestMapping(value = "/api/image", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Images", description = "Image management endpoints")
+@RequiredArgsConstructor
 public class ImageController {
 
     private final ImageService imageService;
-
-    public ImageController(ImageService imageService) {
-        this.imageService = imageService;
-    }
 
     @Operation(summary = "Create a new image")
     @ApiResponses(value = {

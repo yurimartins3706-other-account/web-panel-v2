@@ -1,7 +1,6 @@
 package br.com.webpanel.deploy.customfields;
 
 import java.util.List;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,20 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import br.com.webpanel.deploy.customfields.dto.CreateCustomFieldDto;
 import br.com.webpanel.deploy.customfields.dto.RecoveryCustomFieldDto;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(value = "/api/custom-field", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Custom Fields", description = "Custom field management endpoints")
+@RequiredArgsConstructor
 public class CustomFieldController {
 
     private final CustomFieldService service;
-
-    public CustomFieldController(CustomFieldService service) {
-        this.service = service;
-    }
 
     @Operation(summary = "Create a new custom field")
     @ApiResponses(value = {

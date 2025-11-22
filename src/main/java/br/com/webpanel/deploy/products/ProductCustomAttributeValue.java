@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * ProductCustomAttributeValue entity for storing custom attribute values for products.
@@ -15,6 +17,8 @@ import lombok.Data;
 @Entity
 @Table(name = "product_custom_attribute_value")
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -32,6 +36,6 @@ public class ProductCustomAttributeValue {
     @JoinColumn(name = "custom_field_id", nullable = false)
     private CustomField customField;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(name = "field_value", columnDefinition = "TEXT", nullable = false)
     private String value;
 }

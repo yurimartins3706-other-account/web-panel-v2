@@ -2,12 +2,14 @@ package br.com.webpanel.deploy.images;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
+import br.com.webpanel.deploy.images.Image;
+import br.com.webpanel.deploy.images.ImageRepository;
+import br.com.webpanel.deploy.images.ImageMapper;
+import lombok.RequiredArgsConstructor;
 import br.com.webpanel.deploy.images.dto.CreateImageDto;
 import br.com.webpanel.deploy.images.dto.RecoveryImageDto;
 
@@ -16,15 +18,11 @@ import br.com.webpanel.deploy.images.dto.RecoveryImageDto;
  */
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ImageService {
     
     private final ImageRepository imageRepository;
     private final ImageMapper imageMapper;
-
-    public ImageService(ImageRepository imageRepository, ImageMapper imageMapper) {
-        this.imageRepository = imageRepository;
-        this.imageMapper = imageMapper;
-    }
 
     /**
      * Creates a new image from the provided DTO.

@@ -28,6 +28,7 @@ public interface ProductMapper {
      * @return a DTO representing the product
      */
     @Mapping(target = "categoryIds", expression = "java(product.getCategories() != null ? product.getCategories().stream().map(c -> c.getId()).collect(java.util.stream.Collectors.toSet()) : null)")
+    @Mapping(target = "imagesIds", expression = "java(product.getImages() != null ? product.getImages().stream().map(c -> c.getId()).collect(java.util.stream.Collectors.toSet()) : null)")
     @Mapping(target = "customAttributes", expression = "java(product.getCustomAttributeValues() != null ? product.getCustomAttributeValues().stream().map(this::customAttributeValueToDto).collect(java.util.stream.Collectors.toSet()) : null)")
     RecoveryProductDto toDto(Product product);
 
